@@ -24,4 +24,7 @@ def index():
     
     return jsonify({"extracted_text": extracted_text}), 200
 
+@app.route('/')
+def index():
+    return ("Home - API DIRECTORY")
 

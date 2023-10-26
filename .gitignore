@@ -1,0 +1,42 @@
+# Python files
+*.pyc
+*.pyo
+*.egg-info/
+__pycache__
+__pycache__/
+
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+env/
+
+# Flask specific
+instance/
+
+# Databases
+*.db
+*.sqlite
+
+# Logs
+*.log
+
+# Other files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env

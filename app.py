@@ -26,5 +26,5 @@ def index():
 
 @app.route('/')
 def index():
-    return ("Home - API DIRECTORY")
+    return "Home - API DIRECTORY"
 

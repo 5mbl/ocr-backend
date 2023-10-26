@@ -34,3 +34,4 @@ urllib3==1.26.17
 websockets
 Werkzeug
 gunicorn
+Pillow==8.0.1

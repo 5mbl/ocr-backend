@@ -15,16 +15,11 @@
         <p class="text-gray-600 mb-8 text-center">
           Easily extract text from images and PDFs.
         </p>
-        <form
-          action="/extract-text"
-          method="post"
-          enctype="multipart/form-data"
-          class="flex flex-col"
-        >
+        <form id="uploadForm" enctype="multipart/form-data">
           <input
             type="file"
             name="file"
-            accept="image/*, .pdf"
+            accept="image/png"
             class="mb-4 p-2 border rounded-lg"
           />
           <button
@@ -34,13 +29,46 @@
             Extract Text
           </button>
         </form>
+
         <div class="mt-6 text-center">
           <a href="#" class="text-blue-500 hover:underline"
             >Download as Word file</a
           >
         </div>
+        <div id="extractedText" class="mt-4"></div>
       </div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
 </html>
+
+<script>
+  document
+    .getElementById("uploadForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Create a FormData object, appending the file
+      const formData = new FormData(this);
+
+      // Fetch API to send the file to your Flask endpoint
+      fetch("http://127.0.0.1:5000/api/extractImg2Text", {
+        method: "POST",
+        body: formData, // FormData will be sent as multipart/form-data
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            alert(data.error);
+          } else {
+            // Display the extracted text
+            document.getElementById("extractedText").innerText =
+              data.extracted_text;
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while processing the image.");
+        });
+    });
+</script>

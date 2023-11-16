@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TextExtract Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+      <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+          TextExtract Pro
+        </h1>
+        <p class="text-gray-600 mb-8 text-center">
+          Easily extract text from images and PDFs.
+        </p>
+        <form
+          action="/extract-text"
+          method="post"
+          enctype="multipart/form-data"
+          class="flex flex-col"
+        >
+          <input
+            type="file"
+            name="file"
+            accept="image/*, .pdf"
+            class="mb-4 p-2 border rounded-lg"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Extract Text
+          </button>
+        </form>
+        <div class="mt-6 text-center">
+          <a href="#" class="text-blue-500 hover:underline"
+            >Download as Word file</a
+          >
+        </div>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

@@ -1,30 +1,17 @@
-from flask import Flask, request, jsonify
-try:
-    from PIL import Image
-except ImportError:
-    import Image
+from flask import Flask, render_template
 
-from io import BytesIO
-
-import pytesseract
+from api.extractImg2Text import apiBlueprint  
 
 
 app = Flask(__name__)
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# api router for extracting text from images
+app.register_blueprint(apiBlueprint, url_prefix='/api')
 
-@app.route('/extractImg2Text', methods=['POST'])
-def index():
-    file = request.files.get('file')
-    
-    if file is None or file.filename == '':
-        return jsonify({"error": "No file uploaded"}), 400
-    
-    image = Image.open(file)
-    extracted_text = pytesseract.image_to_string(image)
-    
-    return jsonify({"extracted_text": extracted_text}), 200
-
+"""
 @app.route('/')
 def home():
     return "Home - API DIRECTORY"
-
+"""
+@app.route('/')
+def home():
+    return render_template('index.html')

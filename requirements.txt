@@ -35,4 +35,8 @@ websockets
 Werkzeug
 gunicorn
 pytesseract
-Pillow==8.0.1
+Pillow
+flask_sqlalchemy
+flask_login
+reportlab
+pdf2image

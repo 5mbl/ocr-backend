@@ -299,7 +299,7 @@ def convert():
 
 
 # Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\USER\AppData\Local\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 
 def png_to_text(png_bytes):

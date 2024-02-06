@@ -59,19 +59,17 @@
     
         <div class="container mt-5">
             <div class="row">
-                <div class="col-sm-6">
-    
-                    <h1 class="mb-4">PNG TO TEXT</h1>
-                    <form action="/convert-png-to-pdf" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="png_file">Select PNG File:</label>
-                            <input type="file" class="form-control-file" id="png_file" name="png_file" accept=".png"
-                                required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Convert</button>
-                    </form>
+        <div class="col-sm-6">
+            <h1 class="mb-4">PNG to Text</h1>
+            <form action="/converttt" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="png_file">Select PNG File:</label>
+                    <input type="file" class="form-control-file" id="png_file" name="png_file" accept=".png" required>
                 </div>
-                <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary">Convert to Text</button>
+            </form>
+        </div>
+                        <div class="col-sm-6">
     
                     <h1 class="mb-4">TEXT TO PNG</h1>
                     <form action="/text_to_png" method="post" enctype="multipart/form-data">

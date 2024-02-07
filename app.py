@@ -29,11 +29,13 @@ import zipfile
 
 from PIL import Image, ImageDraw, ImageFont
 
-# Set the path to the Tesseract executable
+# Setting PATH
+
+# pytesseract for OCR
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
+# poppler for pdf2img
 poppler_path = r"C:\poppler-23.11.0\Library\bin"
-
 
 
 
@@ -47,10 +49,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db.init_app(app)
 with app.app_context():
-    db.create_all()  # Erstellen der Datenbanktabellen
+    db.create_all()  # creating the DB
 
 
-# Importieren Sie Ihren Blueprint nach der Initialisierung der App
+# Import the blueprint after initializing the app
 app.register_blueprint(apiBlueprint, url_prefix='/api')
 
 
@@ -252,10 +254,6 @@ def convertPngToPdf():
 
 
 
-
-
-#new
-
 def convert_png_to_jpg(png_bytes):
     # Open PNG image from bytes
     img = Image.open(io.BytesIO(png_bytes))
@@ -273,8 +271,6 @@ def convert_png_to_jpg(png_bytes):
 @app.route('/png-to-jpg')
 def pngToJpg():
     return render_template('png-to-jpg.html')
-
-
 
 
 @app.route('/convert', methods=['POST'])
@@ -388,53 +384,47 @@ def convert_csv_to_text():
 
 
 
-
-
-
 @app.route('/convert-pdf', methods=['POST'])
-def convert_pdf():
-    # Check if the PDF file is present in the request
+def convert_pdf_to_png():
     if 'pdf_file' not in request.files:
-        return 'No file provided', 400
+        return render_template('index.html', error='No PDF file provided')
 
     pdf_file = request.files['pdf_file']
-
-    # Ensure the PDF file is not empty
     if pdf_file.filename == '':
-        return 'No selected file', 400
+        return render_template('index.html', error='No file selected')
 
-    # Create a temporary directory to store images
-    with tempfile.TemporaryDirectory() as tempdir:
-        # Save the uploaded PDF file to the temporary directory
-        pdf_path = os.path.join(tempdir, pdf_file.filename)
-        pdf_file.save(pdf_path)
-        
-        # Convert the PDF to a list of images
-        images = convert_from_bytes(pdf_file.read())
+    # Temporarily save PDF to disk to convert it
+    with tempfile.NamedTemporaryFile(delete=False) as temp_pdf:
+        pdf_file.save(temp_pdf)
+        temp_pdf_path = temp_pdf.name
 
-        # Prepare a ZIP archive in memory to store the PNG files
+    # Convert PDF to a list of images
+    try:
+        # Specify the poppler_path=r'C:\path\to\poppler\bin' if not added to PATH
+        images = convert_from_path(temp_pdf_path, dpi=200)
+
+        # Prepare a ZIP archive to store PNG images
         zip_bytes_io = io.BytesIO()
         with zipfile.ZipFile(zip_bytes_io, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-            # Save each page/image to the ZIP file
             for i, image in enumerate(images):
-                image_path = os.path.join(tempdir, f'page_{i+1}.png')
-                image.save(image_path, 'PNG')
-                zip_file.write(image_path, os.path.basename(image_path))
-        
-        # Reset the file pointer to the beginning after writing
+                # Save each image to a BytesIO object
+                img_byte_arr = io.BytesIO()
+                image.save(img_byte_arr, format='PNG')
+                
+                # Add image to zip file
+                img_byte_arr.seek(0)
+                zip_file.writestr(f'image_{i+1}.png', img_byte_arr.getvalue())
+
+        # Clean up the temporary PDF file
+        os.remove(temp_pdf_path)
+
+        # Return the ZIP file
         zip_bytes_io.seek(0)
-
-        # Clean up the images after sending the file
-        @after_this_request
-        def remove_file(response):
-            for image in images:
-                os.remove(image.filename)
-            return response
-
-        # Send the ZIP file as a download
         return send_file(zip_bytes_io, mimetype='application/zip', as_attachment=True, download_name='converted_images.zip')
-
-
+    except Exception as e:
+        # Clean up the temporary PDF file in case of an error
+        os.remove(temp_pdf_path)
+        return render_template('index.html', error=str(e))
 
 ##jpg to png
 

@@ -5,119 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TextExtract Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   </head>
   <body class="bg-gray-100">
-
-    <nav class="navbar bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#"> Wellcome {{user_name}}</a>
-        <a class="navbar-brand" href="/logout">Logout</a>
+    <nav class="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 text-white">
+      <div class="container mx-auto flex justify-between items-center">
+        <a class="text-2xl font-bold" href="#">Welcome {{user_name}} 👋</a
+        ><a class="text-lg hover:text-blue-200" href="/logout">Logout</a>
       </div>
     </nav>
-    
 
-    <div class="conatiner">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="container mx-auto px-4 py-8">
-            <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
-              <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
-                CSV TO Text File
-              </h1>
-           
-              <!-- <form action="/convert" method="post" enctype="multipart/form-data">
-                <input type="file" name="csv_file" accept=".csv" required>
-                <button
-                type="submit"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Convert 
-              </button>
-            </form> -->
-      
-              <div class="mt-6 text-center">
-                <a href="/csv-to-txt" class="text-blue-500 hover:underline"
-                  >Go</a
-                >
-              </div>
-              <div id="extractedText" class="mt-4"></div>
-            </div>
+    <div class="container mx-auto p-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+            CSV TO Text File
+          </h1>
+          <div class="text-center">
+            <a
+              href="/csv-to-txt"
+              class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >Go</a
+            >
           </div>
-
         </div>
 
-        <div class="col-sm-6">
-          <div class="container mx-auto px-4 py-8">
-            <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
-              <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
-                PNG images into PDF.
-              </h1>
-          
-      
-              <div class="mt-6 text-center">
-                <a href="/png-to-pdf" class="text-blue-500 hover:underline"
-                  >Go</a
-                >
-              </div>
-              <div id="extractedText" class="mt-4"></div>
-            </div>
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+            PNG images into PDF
+          </h1>
+          <div class="text-center">
+            <a
+              href="/png-to-pdf"
+              class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >Go</a
+            >
           </div>
-
         </div>
 
-
-
-
-        
-        <div class="col-sm-6">
-          <div class="container mx-auto px-4 py-8">
-            <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
-              <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
-                PNG into Jpg.
-              </h1>
-
-              <div class="mt-6 text-center">
-                <a href="/png-to-jpg" class="text-blue-500 hover:underline"
-                  >Go</a
-                >
-              </div>
-      
-            
-      
-            
-              <div id="extractedText" class="mt-4"></div>
-            </div>
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+            PNG into JPG
+          </h1>
+          <div class="text-center">
+            <a
+              href="/png-to-jpg"
+              class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >Go</a
+            >
           </div>
-
         </div>
 
-
-
-
-        <div class="col-sm-6">
-          <div class="container mx-auto px-4 py-8">
-            <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
-              <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
-                PNG FILES TO TXT.
-              </h1>
-         
-             
-              <div class="mt-6 text-center">
-                <a href="/png-to-txt" class="text-blue-500 hover:underline"
-                  >Go</a
-                >
-              </div>
-              <div id="extractedText" class="mt-4"></div>
-            </div>
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+            PNG FILES TO TXT
+          </h1>
+          <div class="text-center">
+            <a
+              href="/png-to-txt"
+              class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >Go</a
+            >
           </div>
-
         </div>
-
-
       </div>
     </div>
-  
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
 </html>

@@ -6,6 +6,8 @@ from db.db import db
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import csv
 import os
+import tempfile
+
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -26,6 +28,11 @@ import zipfile
 
 
 from PIL import Image, ImageDraw, ImageFont
+
+# Set the path to the Tesseract executable
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+poppler_path = r"C:\poppler-23.11.0\Library\bin"
 
 
 
@@ -298,8 +305,7 @@ def convert():
 ###############
 
 
-# Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 
 
 def png_to_text(png_bytes):
@@ -387,30 +393,46 @@ def convert_csv_to_text():
 
 @app.route('/convert-pdf', methods=['POST'])
 def convert_pdf():
-    # Check if a file is present in the request
+    # Check if the PDF file is present in the request
     if 'pdf_file' not in request.files:
-        return render_template('index.html', error='No file provided')
+        return 'No file provided', 400
 
     pdf_file = request.files['pdf_file']
 
-    # Check if the file is empty
+    # Ensure the PDF file is not empty
     if pdf_file.filename == '':
-        return render_template('index.html', error='Empty file provided')
+        return 'No selected file', 400
 
-    # Convert PDF to PNG images
-    images = convert_from_bytes(pdf_file.read(), 300)  # 300 DPI
+    # Create a temporary directory to store images
+    with tempfile.TemporaryDirectory() as tempdir:
+        # Save the uploaded PDF file to the temporary directory
+        pdf_path = os.path.join(tempdir, pdf_file.filename)
+        pdf_file.save(pdf_path)
+        
+        # Convert the PDF to a list of images
+        images = convert_from_bytes(pdf_file.read())
 
-    # Save PNG images to an in-memory zip file
-    zip_data = io.BytesIO()
-    with zipfile.ZipFile(zip_data, 'w') as zipf:
-        for i, image in enumerate(images):
-            image_bytes = io.BytesIO()
-            image.save(image_bytes, format='PNG')
-            zipf.writestr(f'page_{i+1}.png', image_bytes.getvalue())
+        # Prepare a ZIP archive in memory to store the PNG files
+        zip_bytes_io = io.BytesIO()
+        with zipfile.ZipFile(zip_bytes_io, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            # Save each page/image to the ZIP file
+            for i, image in enumerate(images):
+                image_path = os.path.join(tempdir, f'page_{i+1}.png')
+                image.save(image_path, 'PNG')
+                zip_file.write(image_path, os.path.basename(image_path))
+        
+        # Reset the file pointer to the beginning after writing
+        zip_bytes_io.seek(0)
 
-    # Create a response with the zip file
-    zip_data.seek(0)
-    return send_file(zip_data, as_attachment=True, download_name='output.zip')
+        # Clean up the images after sending the file
+        @after_this_request
+        def remove_file(response):
+            for image in images:
+                os.remove(image.filename)
+            return response
+
+        # Send the ZIP file as a download
+        return send_file(zip_bytes_io, mimetype='application/zip', as_attachment=True, download_name='converted_images.zip')
 
 
 
@@ -443,6 +465,43 @@ def convert_ppg_to_png():
 
 
 
+def text_file_to_png(text_content, font_size=24, image_size=(600, 400)):
+    """Converts text content to a PNG image."""
+    img = Image.new('RGB', image_size, color='white')
+    draw = ImageDraw.Draw(img)
+    # Use a truetype font available on your system or specify the path to a ttf file
+    font = ImageFont.truetype("arial.ttf", font_size)
+    # Optionally, add some padding or calculate text positioning to center
+    draw.text((10, 10), text_content, fill='black', font=font)
+    
+    # Save image to a bytes buffer
+    img_bytes = io.BytesIO()
+    img.save(img_bytes, format='PNG')
+    img_bytes.seek(0)  # Move to the start of the bytes buffer
+
+    return img_bytes
+
+@app.route('/text_to_png', methods=['POST'])
+def text_to_png():
+    if 'file' not in request.files:
+        return 'No file part', 400
+    file = request.files['file']
+    if file.filename == '':
+        return 'No selected file', 400
+    
+    # Read the text content from the uploaded file
+    text_content = file.read().decode('utf-8')
+    
+    # Convert text to PNG
+    img_bytes = text_file_to_png(text_content)
+    
+    # Send the PNG image as a downloadable response
+    return send_file(
+        img_bytes,
+        as_attachment=True,
+        download_name='converted_image.png',
+        mimetype='image/png'
+    )
 
 #############
 

@@ -46,7 +46,11 @@
 - **Activating the virtual enviroment:**
   - Terminal: `python -m venv myenv`
 - **Install requirements.txt:**
+
   - `pip install -r requirements.txt`
+
+- **Start the Application**
+- `run flask`
 
 ## References
 

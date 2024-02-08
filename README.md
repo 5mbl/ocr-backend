@@ -50,7 +50,7 @@
   - `pip install -r requirements.txt`
 
 - **Start the Application**
-- `run flask`
+  - `run flask`
 
 ## References
 

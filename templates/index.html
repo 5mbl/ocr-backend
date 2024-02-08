@@ -7,10 +7,30 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100">
-    <nav class="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 text-white">
-      <div class="container mx-auto flex justify-between items-center">
-        <a class="text-2xl font-bold" href="#">Welcome {{user_name}} 👋</a
-        ><a class="text-lg hover:text-blue-200" href="/logout">Logout</a>
+    <nav class="bg-gray-800 p-5 text-gray-100">
+      <div
+        class="container mx-auto flex justify-between items-center flex-wrap"
+      >
+        <!-- Adjusted font size and added padding for larger, more prominent text -->
+        <a class="text-3xl font-bold p-2" href="#" style="color: #ffffff"
+          >Welcome {{user_name}} 👋</a
+        >
+        <div class="flex space-x-6 justify-center flex-1 text-xl">
+          <!-- Updated hover effect to underline for a cooler interaction -->
+          <a href="/" class="hover:underline p-2" style="color: #fcd34d"
+            >Home</a
+          >
+          <a href="/about-us" class="hover:underline p-2" style="color: #fcd34d"
+            >About Us</a
+          >
+        </div>
+        <!-- Enhanced visual separation and emphasis on the action item -->
+        <a
+          href="/logout"
+          class="text-xl hover:underline p-2"
+          style="color: #f87171"
+          >Logout</a
+        >
       </div>
     </nav>
 
@@ -69,6 +89,43 @@
         </div>
       </div>
     </div>
+
+    <footer class="bg-gray-900 text-gray-300 py-8 mt-10">
+      <div
+        class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left"
+      >
+        <div>
+          <h2 class="text-lg font-bold mb-4">About TextExtract Pro</h2>
+          <p>
+            Leading the way in text extraction technology. Providing fast,
+            accurate, and reliable services to convert your files effortlessly.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold mb-4">Quick Links</h2>
+          <ul>
+            <li><a href="/" class="hover:text-blue-400">Home</a></li>
+            <li>
+              <a href="/about-us" class="hover:text-blue-400">About Us</a>
+            </li>
+            <li>
+              <a href="/converter" class="hover:text-blue-400">Converter</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold mb-4">Follow Us</h2>
+          <div class="flex justify-center md:justify-start space-x-4">
+            <a href="#" class="hover:text-blue-400">Twitter</a>
+            <a href="#" class="hover:text-blue-400">Facebook</a>
+            <a href="#" class="hover:text-blue-400">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-8">
+        <p>&copy; 2024 TextExtract Pro. All rights reserved.</p>
+      </div>
+    </footer>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>

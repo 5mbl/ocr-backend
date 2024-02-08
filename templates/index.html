@@ -16,20 +16,17 @@
       <div
         class="container mx-auto flex justify-between items-center flex-wrap"
       >
-        <!-- Adjusted font size and added padding for larger, more prominent text -->
         <a class="text-3xl font-bold p-2" href="#" style="color: #ffffff"
           >Welcome {{user_name}} 👋</a
         >
         <div class="flex space-x-6 justify-center flex-1 text-xl">
-          <!-- Updated hover effect to underline for a cooler interaction -->
           <a href="/" class="hover:underline p-2" style="color: #fcd34d"
             >Home</a
           >
-          <a href="/about-us" class="hover:underline p-2" style="color: #fcd34d"
+          <a href="#about-us" class="hover:underline p-2" style="color: #fcd34d"
             >About Us</a
           >
         </div>
-        <!-- Enhanced visual separation and emphasis on the action item -->
         <a
           href="/logout"
           class="text-xl hover:underline p-2"
@@ -98,7 +95,9 @@
     <section class="bg-gray-100 py-12 mt-50">
       <div class="container mx-auto px-4">
         <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold text-gray-800">About Us</h2>
+          <h2 id="about-us" class="text-3xl font-bold text-gray-800">
+            About Us
+          </h2>
           <p class="mt-4 text-gray-600">Discover who we are and what we do</p>
         </div>
         <div class="flex flex-wrap justify-center text-gray-600">
@@ -138,10 +137,7 @@
           <ul>
             <li><a href="/" class="hover:text-blue-400">Home</a></li>
             <li>
-              <a href="/about-us" class="hover:text-blue-400">About Us</a>
-            </li>
-            <li>
-              <a href="/converter" class="hover:text-blue-400">Converter</a>
+              <a href="#about-us" class="hover:text-blue-400">About Us</a>
             </li>
           </ul>
         </div>

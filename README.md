@@ -1,6 +1,6 @@
 # ProConverter
 
-Projekt Documentation: https://5mbl.github.io/proconverter-docs/docs/start/
+Project Documentation: https://5mbl.github.io/proconverter-docs/docs/start/
 
 ## How to Run the Code
 

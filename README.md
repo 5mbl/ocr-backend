@@ -52,7 +52,7 @@ Project Documentation: https://5mbl.github.io/proconverter-docs/docs/start/
   - `pip install -r requirements.txt`
 
 - **Start the Application**
-  - `run flask`
+  - `flask run`
 
 ## References
 

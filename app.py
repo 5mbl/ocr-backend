@@ -11,7 +11,6 @@ import tempfile
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
-from PIL import Image
 import io
 import pytesseract
 
